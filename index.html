@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Супер Чат Бот | Диалоговое окно</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <div class="bot-avatar">
+                🤖
+            </div>
+            <div class="header-info">
+                <h2>🌟 Супер Чат Бот</h2>
+                <p><span class="status-badge"></span> онлайн · отвечаю на всё</p>
+            </div>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+            <!-- Сообщения будут динамически добавляться сюда -->
+        </div>
+
+        <div class="chat-input-area">
+            <div class="input-wrapper">
+                <input type="text" id="messageInput" placeholder="Напишите сообщение..." autocomplete="off">
+            </div>
+            <button id="sendBtn">➤</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
