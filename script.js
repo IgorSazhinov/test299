@@ -6,6 +6,7 @@
 let currentState = 'AWAIT_QUESTION';
 let lastUserQuestion = '';
 let pendingUserYes = null; // храним "да" пользователя для отложенного показа
+let count = 0;
 
 // DOM элементы
 const messagesContainer = document.getElementById('chatMessages');
@@ -66,7 +67,7 @@ async function botReplyWithDelay(responseText, delayMs = 500) {
 
 // Инициализация / приветствие при загрузке
 async function initializeBot() {
-    await botReplyWithDelay("🤖 я супер чат бот. отвечу на любой вопрос. Напиши его", 400);
+    await botReplyWithDelay("🌼 я Аська-бот. отвечу на любой вопрос. Напиши его", 400);
     currentState = 'AWAIT_QUESTION';
     lastUserQuestion = '';
     pendingUserYes = null;
@@ -74,6 +75,7 @@ async function initializeBot() {
 
 // Главная логика обработки сообщений пользователя
 async function processUserInput(userText) {
+
     const trimmed = userText.trim();
     if (trimmed === "") {
         addMessage('bot', 'Пожалуйста, напишите сообщение или вопрос 🙂');
@@ -92,7 +94,14 @@ async function processUserInput(userText) {
     
     if (currentState === 'AWAIT_CONFIRMATION') {
         const lowerAnswer = trimmed.toLowerCase();
-        if (lowerAnswer === 'да') {
+        if (lowerAnswer === '300') {
+            pendingUserYes = trimmed
+            // addMessage('user', pendingUserYes, true);
+            await botReplyWithDelay('Отсоси у программиста!)))', 400);
+            return
+        }
+        if (lowerAnswer === 'да' || lowerAnswer === 'верно') {
+            count = 0;
             // Сохраняем "да" для отложенного показа
             pendingUserYes = trimmed;
             
@@ -112,9 +121,16 @@ async function processUserInput(userText) {
             
             return;
         } else {
+            if (count >= 2) {
+
+                botReplyWithDelay('Проверка капчи. Напиши "300"')
+                count = 0;
+                return
+            }
             // Любой другой ответ - повторяем вопрос
             const retryMessage = `Я не получил подтверждение. Повторюсь: правильно я понял, что вы спрашиваете: «${lastUserQuestion}»? (Ответьте "да" или что-то другое, если нет)`;
             await botReplyWithDelay(retryMessage, 450);
+            count = count + 1
             return;
         }
     }
